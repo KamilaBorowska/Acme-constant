@@ -27,6 +27,10 @@ sub generate_constant {
         # Array(3) is [,,,], but new Array(3, 3) is [3, 3]).
         else {
             Carp::croak "${package}::$name used in scalar context";
+
+            # Return lvalue in order to make older versions of Perl
+            # happy, even when it's not going to be used.
+            @values;
         }
     };
     # Make a block, to make a scope for strict "refs".
