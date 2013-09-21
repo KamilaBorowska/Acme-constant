@@ -26,7 +26,7 @@ sub generate_constant {
         # constructor in ECMAScript is already confusing enough (new
         # Array(3) is [,,,], but new Array(3, 3) is [3, 3]).
         else {
-            Carp::croak "$package::$name used in scalar context";
+            Carp::croak "${package}::$name used in scalar context";
         }
     };
     # Make a block, to make a scope for strict "refs".
