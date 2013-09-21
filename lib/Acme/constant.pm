@@ -26,7 +26,7 @@ sub generate_constant {
         # constructor in ECMAScript is already confusing enough (new
         # Array(3) is [,,,], but new Array(3, 3) is [3, 3]).
         else {
-            Carp::croak "${package}::$name used in scalar context";
+            Carp::croak "Can't call ${package}::$name in scalar context";
 
             # Return lvalue in order to make older versions of Perl
             # happy, even when it's not going to be used.
@@ -50,7 +50,7 @@ sub import {
 
     # Without arguments, simply fail.
     if (@_ == 0) {
-        Carp::croak "use $name used without arguments";
+        Carp::carp qq[Useless use of "$name" pragma];
     }
 
     # When called with one argument, this argument would be hash
@@ -69,6 +69,7 @@ sub import {
         my $name = shift;
         generate_constant $package, $name, @_;
     }
+    return;
 }
 
 # Return positive value to make Perl happy.
@@ -270,6 +271,41 @@ Instead, you should use following code.
     use Acme::constant KEY => "acme";
     my %hash;
     $hash{(KEY)} = 42;
+
+=head1 DIAGNOSTICS
+
+=over 4
+
+=item Can't call %s in scalar context
+
+(F) You tried to call constant containing constant containing different
+numbers than one in scalar context. As it's hard to determine what you
+mean, you have to disambiguate your call. If you want to get count of
+elements, you may want to assign it to C<()>, like C<() = CONSTANT>. If
+you want to get last element, use C<(CONSTANT)[-1]>.
+
+=item Can't modify non-lvalue subroutine call
+
+(F) You tried to assign single value to constant containing an array.
+This won't work, as Perl expects a list to be assigned. If you really
+want to assign an single element, use C<(CONSTANT) = $value> syntax.
+
+This error is provided by Perl, and as such, it could be confusing,
+as constant actually is lvalue, just assigned in wrong context.
+
+=item Useless localization of subroutine entry
+
+(W syntax) You tried to localize constant with C<local> operator. This
+is legal, but currently has no effect. This may change in some future
+version of Perl, but in the meantime such code is discouraged.
+
+=item Useless use of "Acme::constant" pragma
+
+(W) You did C<use Acme::constant;> without any arguments. This isn't
+very useful. If this is what you mean, write C<use Acme::constant ();>
+instead.
+
+=back
 
 =head1 SEE ALSO
 
