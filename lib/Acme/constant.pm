@@ -38,7 +38,7 @@ sub generate_constant {
         # Because of symbol table modifications, I have to allow
         # symbolic references.
         no strict qw(refs);
-        *{"$package::$name"} = $constant;
+        *{"${package}::$name"} = $constant;
     }
 }
 
