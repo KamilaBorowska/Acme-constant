@@ -1,4 +1,5 @@
 package Acme::constant;
+use 5.014;
 use strictures 1;
 use Carp ();
 
