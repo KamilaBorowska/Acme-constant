@@ -29,6 +29,7 @@ sub generate_constant {
         else {
             Carp::croak "Can't call ${package}::$name in scalar context";
 
+            die 'Carp::croak overwritten to not throw exceptions (?)';
             # Return lvalue in order to make older versions of Perl
             # happy, even when it's not going to be used.
             @values;
