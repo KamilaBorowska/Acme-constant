@@ -60,8 +60,8 @@ sub import {
     elsif (@_ == 1) {
         my %hash = %{shift()};
         # each is safe here, as %hash is lexical variable.
-        while (my ($name, $value) = each %hash) {
-            generate_constant $package, $name, $value;
+        while (my @pair = each %hash) {
+            generate_constant $package, @pair;
         }
     }
 
