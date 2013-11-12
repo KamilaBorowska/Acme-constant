@@ -81,7 +81,7 @@ __END__
 
 =head1 NAME
 
-Acme::constant - Like constant, except actually not.
+Acme::constant - Like constant, except not.
 
 =head1 SYNOPSIS
 
